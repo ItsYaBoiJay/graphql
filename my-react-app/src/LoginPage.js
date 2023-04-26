@@ -32,6 +32,9 @@ async function getUsername() {
         user {
             login
             id
+            firstName
+            lastName
+            auditRatio
         }
     }
     `
@@ -87,7 +90,11 @@ function LoginPage() {
     <>
       {userData ? (
         <div>
-          <p>Welcome, {userData.data.user[0].login}!</p>
+          <p>Welcome!</p>
+          <p>Name: {userData.data.user[0].firstName} {userData.data.user[0].lastName}</p>
+          <p>Username: {userData.data.user[0].login}</p>
+          <p>Id: {userData.data.user[0].id}</p>
+          <p>Audit Ratio: {Math.round(userData.data.user[0].auditRatio * 10) / 10}</p>
           <button onClick={logout}>Logout</button>
         </div>
       ) : (
