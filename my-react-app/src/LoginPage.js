@@ -23,7 +23,7 @@ async function getToken(credentials) {
         return 0
     }
 }
-
+let uId
 async function getUsername() {
     console.log("getUsername called")
     // query to get username, graphql
@@ -34,7 +34,7 @@ async function getUsername() {
             id
             firstName
             lastName
-            auditRatio  
+            auditRatio
         }
     }
     `
@@ -51,10 +51,80 @@ async function getUsername() {
     const respons = await fetch('https://01.gritlab.ax/api/graphql-engine/v1/graphql', requestOptions)
     console.log(respons)
     const data = await respons.json()
-    console.log(data)
+    console.log("data",data.data)
+
+    uId = data.data.user[0].id
+    getTheRest()
 
     return data
 }
+
+async function getTheRest() {
+  console.log("getUsername called")
+  // query to get username, graphql
+  console.log("id",uId)
+   const query = `
+   query gatherTotalXp($uId: Int!) {
+    user: user_by_pk(id: $uId) {
+      login
+      firstName
+      lastName
+      auditRatio
+      totalUp
+      totalDown
+    }
+    xp : transaction_aggregate(
+    where: {
+      userId: {_eq: 1429}
+      type: {_eq: "xp"}
+      eventId: {_eq: 20}
+    }
+  ) {aggregate {sum {amount}}}
+    xpJs : transaction_aggregate(
+    where: {
+      userId: {_eq: 1429}
+      type: {_eq: "xp"}
+      eventId: {_eq: 37}
+    }
+  ) {aggregate {sum {amount}}}
+    xpGo : transaction_aggregate(
+    where: {
+      userId: {_eq: 1429}
+      type: {_eq: "xp"}
+      eventId: {_eq: 10}
+    }
+  ) {aggregate {sum {amount}}}
+  }`
+  const variables = {uId: uId}
+  const requestOptions = {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+      },
+      body: JSON.stringify({ query, variables })
+  }
+
+  const respons = await fetch('https://01.gritlab.ax/api/graphql-engine/v1/graphql', requestOptions)
+  console.log(respons)
+  const data = await respons.json()
+  console.log(data)
+
+  let percent = 33.333333333333333333333333333333333
+
+  let el = document.createElement("svg")
+  el.innerHTML += `<svg height="200" width="200" viewBox="0 0 200 200">
+  <circle r="100" cx="100" cy="100" fill="white" />
+  <circle r="50" cx="100" cy="100" fill="bisque"
+  stroke="tomato"
+  stroke-width="100"
+  stroke-dasharray="calc(${percent} * 314 / 100) 314"
+  transform="rotate(-90) translate(-200)" />
+</svg>`
+  document.body.appendChild(el)
+
+}
+
 
 function logout() {
     sessionStorage.removeItem('token');
@@ -97,6 +167,7 @@ function LoginPage() {
           <p>Id: {userData.data.user[0].id}</p>
           <p>Audit Ratio: {Math.round(userData.data.user[0].auditRatio * 10) / 10}</p>
           <button onClick={logout}>Logout</button>
+          <button onClick={getTheRest}>more shit</button>
         </div>
       ) : (
         <div>
