@@ -5,14 +5,14 @@
 async function getXp() {
     console.log("getUsername called")
     // query to get username, graphql
-    const query = `
-    query {
-        user {
-            login
-            id
-        }
-    }
-    `
+     const query = `
+    // query {
+    //     user {
+    //         login
+    //         id
+    //     }
+    // }
+    // `
 
     const requestOptions = {
         method: 'POST',
@@ -30,6 +30,7 @@ async function getXp() {
 
     return data
 }
+
 
 
 
@@ -55,4 +56,16 @@ async function getXp() {
 //       eventId: {_eq: 10}
 //     }
 //   ) {aggregate {sum {amount}}}
+//   }
+
+
+// query asd {
+//     user: user_by_pk(id: 1402) {
+//       login
+//       firstName
+//       lastName
+//       auditRatio
+//       totalUp
+//       totalDown
+//     }
 //   }

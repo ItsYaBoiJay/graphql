@@ -34,7 +34,7 @@ async function getUsername() {
             id
             firstName
             lastName
-            auditRatio
+            auditRatio  
         }
     }
     `
@@ -77,6 +77,7 @@ function LoginPage() {
         let username = await getUsername();
         console.log(username)
         setUserData(username)
+
     } else {
         setError("You don't know your own password??????!?!!?!?!??!??!??")
         console.log("Login failed")
