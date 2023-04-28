@@ -71,3 +71,24 @@ a{
     float: right;
     background-color: grey;
 }
+.graph .labels.x-labels {
+    text-anchor: middle;
+  }
+.graph .labels.x-labels {
+    text-anchor: middle;
+}
+.graph {
+    height: 500px;
+    width: 800px;
+}
+  
+.graph .grid {
+    stroke: #ccc;
+    stroke-dasharray: 0;
+    stroke-width: 1;
+}
+
+.data {
+    fill: red;
+    stroke-width: 1; 
+  }

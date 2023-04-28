@@ -72,23 +72,53 @@ async function getTheRest() {
       totalUp
       totalDown
     }
-    xp : transaction_aggregate(
+    audits: transaction(order_by: {createdAt: asc}, where: {type: {_regex: "up|down"}}) {
+      type
+      amount
+      path
+      createdAt
+    }
+  	xp: transaction(order_by: {createdAt: asc}, where: {
+      type: {_eq: "xp"}
+    	eventId: {_eq: 20}
+    }) {
+    		createdAt
+        amount
+    		path
+      }
+  	xpJS: transaction(order_by: {createdAt: asc}, where: {
+      type: {_eq: "xp"}
+    	eventId: {_eq: 37}
+    }) {
+    		createdAt
+        amount
+    		path
+      }
+  	xpGo: transaction(order_by: {createdAt: asc}, where: {
+      type: {_eq: "xp"}
+    	eventId: {_eq: 10}
+    }) {
+    		createdAt
+        amount
+    		path
+      }
+    xpTotal : transaction_aggregate(
     where: {
-      userId: {_eq: 1429}
+      userId: {_eq: $uId}
       type: {_eq: "xp"}
       eventId: {_eq: 20}
     }
   ) {aggregate {sum {amount}}}
-    xpJs : transaction_aggregate(
+    xpJsTotal : transaction_aggregate(
     where: {
-      userId: {_eq: 1429}
+      userId: {_eq: $uId}
       type: {_eq: "xp"}
       eventId: {_eq: 37}
     }
   ) {aggregate {sum {amount}}}
-    xpGo : transaction_aggregate(
+    xpGoTotal : transaction_aggregate(
     where: {
-      userId: {_eq: 1429}
+      userId: {_eq: $uId}
       type: {_eq: "xp"}
       eventId: {_eq: 10}
     }
@@ -111,7 +141,7 @@ async function getTheRest() {
 
   let percent = data.data.user.totalUp / (data.data.user.totalUp + data.data.user.totalDown) * 100
 
-  let el = document.createElement("svg")
+  let el = document.createElement("div")
   el.innerHTML += `<svg height="200" width="200" viewBox="0 0 200 200">
   <circle r="100" cx="100" cy="100" fill="white" />
   <circle r="50" cx="100" cy="100" fill="transparent"
@@ -120,8 +150,79 @@ async function getTheRest() {
   stroke-dasharray="calc(${percent} * 314 / 100) 314"
   transform="rotate(-90) translate(-200)" />
 </svg>`
-  document.body.appendChild(el)
-return data
+  
+
+//   el.innerHTML += `<svg version="1.2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="graph" aria-labelledby="title" role="img">
+//   <title id="title">A line chart showing some information</title>
+// <g class="grid x-grid" id="xGrid">
+//   <line x1="90" x2="90" y1="5" y2="371"></line>
+// </g>
+// <g class="grid y-grid" id="yGrid">
+//   <line x1="90" x2="705" y1="370" y2="370"></line>
+// </g>
+//   <g class="labels x-labels">
+//   <text x="100" y="400">2008</text>
+//   <text x="246" y="400">2009</text>
+//   <text x="392" y="400">2010</text>
+//   <text x="538" y="400">2011</text>
+//   <text x="684" y="400">2012</text>
+//   <text x="400" y="440" class="label-title">Time wasted</text>
+// </g>
+// <g class="labels y-labels">
+//   <text x="80" y="15">15</text>
+//   <text x="80" y="131">10</text>
+//   <text x="80" y="248">5</text>
+//   <text x="80" y="373">0</text>
+//   <text x="50" y="200" class="label-title">Total xp</text>
+// </g>
+// <g class="data" data-setname="Our first data set">
+//   <circle cx="90" cy="192" data-value="7.2" r="4"></circle>
+//   <circle cx="240" cy="141" data-value="8.1" r="4"></circle>
+//   <circle cx="388" cy="179" data-value="7.7" r="4"></circle>
+//   <circle cx="531" cy="200" data-value="6.8" r="4"></circle>
+//   <circle cx="677" cy="104" data-value="6.7" r="4"></circle>
+// </g>
+// </svg>`
+console.log("dajs",data.data.xp)
+el.appendChild(createLineChart(data.data.xp))
+document.body.appendChild(el)
+
+}
+
+function createLineChart(dataArray) {
+  let yearMin = [dataArray[0].createdAt]
+  let yearMax = [dataArray[dataArray.length-1].amount]
+  let xpMin = 0
+  let xpMax = dataArray[dataArray.length-1].amount
+  let el = document.createElement("svg")
+  el.innerHTML += `<svg version="1.2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="graph" aria-labelledby="title" role="img">
+  <title id="title">A line chart showing some information</title>
+<g class="grid x-grid" id="xGrid">
+  <line x1="90" x2="90" y1="5" y2="371"></line>
+</g>
+<g class="grid y-grid" id="yGrid">
+  <line x1="90" x2="705" y1="370" y2="370"></line>
+</g>`
+let year = document.createElement("g")
+let xp = document.createElement("g")
+year.classList.add("labels", "x-labels")
+xp.classList.add("labels","y-labels")
+for (let i = 0; i < 5; i++) {
+  year.innerHTML += `<text y="400" x="${100 + (100 * i)}">${yearMin + ((yearMax / 5) * i)}</text`
+  xp.innerHTML += `<text x=80 y="${15 + (115 * i)}">${xpMin + ((xpMax / 5) * i)}</text>`
+}
+year.innerHTML += `<text x="400" y="440" class="label-title">Time wasted</text>`
+xp.innerHTML += `<text x="50" y="200" class="label-title">Total xp</text>`
+el.firstChild.appendChild(year)
+el.firstChild.appendChild(xp)
+el.innerHTML += `<g class="data" data-setname="Our first data set">
+<circle cx="90" cy="192" data-value="7.2" r="4"></circle>
+<circle cx="240" cy="141" data-value="8.1" r="4"></circle>
+<circle cx="388" cy="179" data-value="7.7" r="4"></circle>
+<circle cx="531" cy="200" data-value="6.8" r="4"></circle>
+<circle cx="677" cy="104" data-value="6.7" r="4"></circle>
+</g>`
+return el.firstChild
 }
 
 
