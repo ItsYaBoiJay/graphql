@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 
 async function getToken(credentials) {
@@ -54,7 +53,7 @@ async function getUsername() {
     console.log("data",data.data)
 
     uId = data.data.user[0].id
-    getTheRest()
+    // getTheRest()
 
     return data
 }
@@ -110,19 +109,19 @@ async function getTheRest() {
   const data = await respons.json()
   console.log(data)
 
-  let percent = 33.333333333333333333333333333333333
+  let percent = data.data.user.totalUp / (data.data.user.totalUp + data.data.user.totalDown) * 100
 
   let el = document.createElement("svg")
   el.innerHTML += `<svg height="200" width="200" viewBox="0 0 200 200">
   <circle r="100" cx="100" cy="100" fill="white" />
-  <circle r="50" cx="100" cy="100" fill="bisque"
+  <circle r="50" cx="100" cy="100" fill="transparent"
   stroke="tomato"
   stroke-width="100"
   stroke-dasharray="calc(${percent} * 314 / 100) 314"
   transform="rotate(-90) translate(-200)" />
 </svg>`
   document.body.appendChild(el)
-
+return data
 }
 
 
@@ -147,8 +146,14 @@ function LoginPage() {
         let username = await getUsername();
         console.log(username)
         setUserData(username)
-
-    } else {
+        getTheRest()
+      //  let auditlicious = await getTheRest()
+      //   console.log("backstreet boys for life", auditlicious)
+      //   console.log("TELL ME WHY", auditlicious.data.user.totalUp)
+      //   console.log("AINT NOTHING BUT A HEART ACHE", auditlicious.data.user.totalDown)
+      //   let procent = Math.round(auditlicious.data.user.totalUp / auditlicious.data.user.totalDown * 10 ) /10
+      //   console.log(procent)
+    } else { 
         setError("You don't know your own password??????!?!!?!?!??!??!??")
         console.log("Login failed")
         setTimeout(() => {
