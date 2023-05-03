@@ -185,20 +185,20 @@ async function getTheRest() {
 // </svg>`
 console.log("dajs",data.data.xp)
 el.append(createLineChart(data.data.xp, data.data.xpTotal.aggregate.sum.amount, "all"), createLineChart(data.data.xpJS, data.data.xpJsTotal.aggregate.sum.amount, "js"), createLineChart(data.data.xpGo, data.data.xpGoTotal.aggregate.sum.amount, "go"))
-let all = document.createElement("button")
-let go = document.createElement("button")
-let js = document.createElement("button")
+//let all = document.createElement("button")
+//let go = document.createElement("button")
+//let js = document.createElement("button")
 
 
-all.innerHTML += "Projects"
-all.setAttribute("onclick", `showGraph("all")`)
-go.innerHTML += "Go piscine"
-go.setAttribute("onclick", `showGraph("go")`)
-js.innerHTML += "Js piscine"
-js.setAttribute("onclick", `showGraph("js")`)
-el.append(all,go,js)
+//all.innerHTML += "Projects"
+//all.setAttribute("onclick", `showGraph("all")`)
+//go.innerHTML += "Go piscine"
+//go.setAttribute("onclick", `showGraph("go")`)
+//js.innerHTML += "Js piscine"
+//js.setAttribute("onclick", `showGraph("js")`)
+//el.append(all,go,js)
 document.body.appendChild(el)
-//showGraph("all")
+showGraph("all")
 // return (<button onClick={showGraph("all")}>
 //   Click me
 // </button>)
@@ -207,7 +207,7 @@ document.body.appendChild(el)
 // document.getElementsByClassName("js")[0].onclick = showGraph("js")
 
 }
-function showGraph(wtf, graph = "all") {
+function showGraph(graph = "all") {
   console.log("graph chosen", graph)
   document.getElementsByClassName("all")[0].style.display = "none"
   document.getElementsByClassName("go")[0].style.display = "none"
@@ -357,7 +357,9 @@ function LoginPage() {
           <p>Audit Ratio: {Math.round(userData.data.user[0].auditRatio * 10) / 10}</p>
           <button onClick={logout}>Logout</button>
           <button onClick={getTheRest}>more shit</button>
-          <button onClick={showGraph}>test</button>
+          <button onClick={() => showGraph("all")}>Projects</button>
+          <button onClick={() => showGraph("go")}>Go Piscine</button>
+          <button onClick={() => showGraph("js")}>Js Piscine</button>
         </div>
       ) : (
         <div>
