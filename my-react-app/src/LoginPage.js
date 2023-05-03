@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-
+const js = "js"
+const go = "go"
+const all = "all"
 async function getToken(credentials) {
 
     const requestOptions = {
