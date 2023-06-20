@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/ItsYaBoiJay/itsyaboijay.github.io/static/css/main.073c9b0a.css",
+    "main.js": "/ItsYaBoiJay/itsyaboijay.github.io/static/js/main.a4acb036.js",
+    "static/js/787.bc7d429a.chunk.js": "/ItsYaBoiJay/itsyaboijay.github.io/static/js/787.bc7d429a.chunk.js",
+    "static/media/logo.svg": "/ItsYaBoiJay/itsyaboijay.github.io/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/ItsYaBoiJay/itsyaboijay.github.io/index.html",
+    "main.073c9b0a.css.map": "/ItsYaBoiJay/itsyaboijay.github.io/static/css/main.073c9b0a.css.map",
+    "main.a4acb036.js.map": "/ItsYaBoiJay/itsyaboijay.github.io/static/js/main.a4acb036.js.map",
+    "787.bc7d429a.chunk.js.map": "/ItsYaBoiJay/itsyaboijay.github.io/static/js/787.bc7d429a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.a4acb036.js"
+  ]
+}
